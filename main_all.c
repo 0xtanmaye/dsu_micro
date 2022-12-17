@@ -7,7 +7,6 @@
 #define CHAR 3
 #define LIMIT 200
 
-
 #define lx
 
 void clean_stdin(void)
@@ -160,58 +159,109 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
     }
 	return flag;
 }
-
-/* void binary_search(int format, void *arrayptr, int size, void *search_ptr)
+int binary_search(int format, int size, void *arrayptr, void *search_ele)
 {
     if(format==INT)
     {
-        int *array=(int *)arrayptr;
-        int search=*((int*)search_ptr);
+        int *array=(int *)arr_ptr;
+        int search=*((int *)search_ele);
+		int mid, lowr, highr, flag=0;
+
+    	lowr=0;
+    	highr=size-1;
+
+    	while(lowr<=highr)
+		{
+			mid=(lowr+highr)/2;
+			if(search==array[mid])
+			{
+				printf("Element found at position %d\n", mid+1);
+				flag++;
+				break;
+			}
+			else if(search>array[mid])
+			{
+				lowr=mid+1;
+			}
+			else if(search<array[mid])
+			{
+				highr=mid-1;
+			}
+		}
+		if(flag==0)
+			printf("Element not found\n");
+		
+		return flag;
     }
     else if(format==FLOAT)
     {
-        float *array=(float *)arrayptr;
-        float search=*((float*)search_ptr);
+        float *array=(float *)arr_ptr;
+        float search=*((float *)search_ele);
+		int mid, lowr, highr, flag=0;
+
+    	lowr=0;
+    	highr=size-1;
+
+    	while(lowr<=highr)
+		{
+			mid=(lowr+highr)/2;
+			if(search==array[mid])
+			{
+				printf("Element found at position %d\n", mid+1);
+				flag++;
+				break;
+			}
+			else if(search>array[mid])
+			{
+				lowr=mid+1;
+			}
+			else if(search<array[mid])
+			{
+				highr=mid-1;
+			}
+		}
+		if(flag==0)
+			printf("Element not found\n");
+
+		return flag;
     }
     else if(format==CHAR)
     {
-        char *array=(char *)arrayptr;
-        char search=*((char*)search_ptr);
-    }
+		char *array=(char *)arr_ptr;
+        char search=*((char *)search_ele);
+    	int mid, lowr, highr, flag=0;
 
-    int mid, lowr, highr, flag=0;
+    	lowr=0;
+    	highr=size-1;
 
-    lowr=0;
-    highr=size-1;
-
-    while(lowr<=highr)
-	{
-		mid=(lowr+highr)/2;
-		\
-		if(search==array[mid])
+    	while(lowr<=highr)
 		{
-		printf("Element found at position %d\n", mid+1);
-			flag++;
-			break;
+			mid=(lowr+highr)/2;
+			if(search==array[mid])
+			{
+				printf("Element found at position %d\n", mid+1);
+				flag++;
+				break;
+			}
+			else if(search>array[mid])
+			{
+				lowr=mid+1;
+			}
+			else if(search<array[mid])
+			{
+				highr=mid-1;
+			}
 		}
-		else if(search>array[mid])
-		{
-			lowr=mid+1;
-		}
-		else if(search<array[mid])
-		{
-			highr=mid-1;
-		}
+		if(flag==0)
+			printf("Element not found\n");
+			
+		return flag;
 	}
-	if(flag==0)
-		printf("Element not found\n");
 }
-*/
 int main()
 {
 
     int main_choice, sub_choice;
-	void *arr_ptr;
     printf("-----------------------------------------------------------------------------------------------------------------\n");
     printf("-----------------------------------------------------------------------------------------------------------------\n\n");
     printf("                                   Implement all types of Data Structures\n\n");
@@ -240,7 +290,7 @@ int main()
                 case 0:
                     int arr_datatype=get_datatype();
 					int arr_size=get_size();
-					arr_ptr=create_array(arr_datatype, arr_size);
+					void *arr_ptr=create_array(arr_datatype, arr_size);
 					printf("Enter the %d elements:\n", arr_size);
 					clean_stdin();
 					int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
@@ -267,8 +317,9 @@ int main()
 						scanf("%c", &search_ele);
 						linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
 					}
-            }
-
+					break;
+				case 1:
+					
             break;
         case 2:
             printf("  Sorting Techniques\n");
