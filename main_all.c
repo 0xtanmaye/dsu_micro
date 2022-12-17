@@ -15,6 +15,7 @@ void clean_stdin(void)
     int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 }
+
 void clear_screen()
 {
     #ifdef lx
@@ -27,11 +28,11 @@ void clear_screen()
 void *create_array(int format, int size)
 {
 	int ele_size;
-	if(format==1)
+	if(format==INT)
 		ele_size=4;
-	else if(format==2)
+	else if(format==FLOAT)
 		ele_size=4;
-	else if(format==3)
+	else if(format==CHAR)
 		ele_size=1;
 
     void *ptr=calloc(size, ele_size);
@@ -186,7 +187,7 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
     while(lowr<=highr)
 	{
 		mid=(lowr+highr)/2;
-		
+		\
 		if(search==array[mid])
 		{
 		printf("Element found at position %d\n", mid+1);
@@ -210,7 +211,6 @@ int main()
 {
 
     int main_choice, sub_choice;
-    int arr_datatype;
 	void *arr_ptr;
     printf("-----------------------------------------------------------------------------------------------------------------\n");
     printf("-----------------------------------------------------------------------------------------------------------------\n\n");
@@ -238,13 +238,13 @@ int main()
             switch(sub_choice)
             {
                 case 0:
-                    arr_datatype=get_datatype();
+                    int arr_datatype=get_datatype();
 					int arr_size=get_size();
 					arr_ptr=create_array(arr_datatype, arr_size);
 					printf("Enter the %d elements:\n", arr_size);
 					clean_stdin();
 					int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
-					printf("\n%d Elements read\n", arr_size);
+					printf("\n%d Elements read\n", ele_read);
 					printf("\nEnter the element you want to search:");
 					if(arr_datatype==INT)
 					{
