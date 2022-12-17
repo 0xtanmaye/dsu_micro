@@ -47,7 +47,7 @@ int read_array(int format, void *arrayptr, int size)
         int *array=(int *)arrayptr;
 		for(i=0;i<size;i++)
 		{
-			scanf("%d", &array[i]);
+			scanf(" %d", &array[i]);
 		}
     }
     else if(format==FLOAT)
@@ -55,7 +55,7 @@ int read_array(int format, void *arrayptr, int size)
         float *array=(float *)arrayptr;
 		for(i=0;i<size;i++)
 		{
-			scanf("%f", &array[i]);
+			scanf(" %f", &array[i]);
 		}
     }
     else if(format==CHAR)
@@ -105,6 +105,8 @@ int get_size()
 
 int linear_search(int format, int size, void *arr_ptr, void *search_ele)
 {
+	printf("Linear Search \n\n");
+	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int flag=0;
     if(format==INT)
     {
@@ -159,8 +161,10 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
     }
 	return flag;
 }
-int binary_search(int format, int size, void *arrayptr, void *search_ele)
+int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 {
+	printf("Binary Search \n\n");
+	printf("-----------------------------------------------------------------------------------------------------------------\n");
     if(format==INT)
     {
         int *array=(int *)arr_ptr;
@@ -258,6 +262,73 @@ int binary_search(int format, int size, void *arrayptr, void *search_ele)
 		return flag;
 	}
 }
+
+void create_and_LS()
+{
+	int arr_datatype=get_datatype();
+	int arr_size=get_size();
+	void *arr_ptr=create_array(arr_datatype, arr_size);
+	printf("Enter the %d elements:\n", arr_size);
+	clean_stdin();
+	int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
+	printf("\n%d Elements read\n", ele_read);
+	printf("\nEnter the element you want to search:");
+	if(arr_datatype==INT)
+	{
+		int search_ele;
+		clean_stdin();
+		scanf("%d", &search_ele);
+		linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+	else if(arr_datatype==FLOAT)
+	{
+		float search_ele;
+		clean_stdin();
+		scanf("%f", &search_ele);
+		linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+	else if(arr_datatype==CHAR)
+	{
+		char search_ele;
+		clean_stdin();
+		scanf("%c", &search_ele);
+		linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+}
+
+void create_and_BS()
+{
+	int arr_datatype=get_datatype();
+	int arr_size=get_size();
+	void *arr_ptr=create_array(arr_datatype, arr_size);
+	printf("Enter the %d elements:\n", arr_size);
+	clean_stdin();
+	int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
+	printf("\n%d Elements read\n", ele_read);
+	printf("\nEnter the element you want to search:");
+	if(arr_datatype==INT)
+	{
+		int search_ele;
+		clean_stdin();
+		scanf("%d", &search_ele);
+		binary_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+	else if(arr_datatype==FLOAT)
+	{
+		float search_ele;
+		clean_stdin();
+		scanf("%f", &search_ele);
+		binary_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+	else if(arr_datatype==CHAR)
+	{
+		char search_ele;
+		clean_stdin();
+		scanf("%c", &search_ele);
+		binary_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+	}
+}
+
 int main()
 {
 
@@ -279,48 +350,33 @@ int main()
     switch (main_choice)
     {
         case 1:
-            printf("  Searching Techniques\n\n");
-            printf("0: Linear Search Implementation\n");
-            printf("1: Binary Search Implementation\n");
-            printf("2: Return to main menu");
-            printf("Choice: ");
-            scanf("%d",&sub_choice);
-            switch(sub_choice)
-            {
-                case 0:
-                    int arr_datatype=get_datatype();
-					int arr_size=get_size();
-					void *arr_ptr=create_array(arr_datatype, arr_size);
-					printf("Enter the %d elements:\n", arr_size);
-					clean_stdin();
-					int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
-					printf("\n%d Elements read\n", ele_read);
-					printf("\nEnter the element you want to search:");
-					if(arr_datatype==INT)
-					{
-						int search_ele;
-						clean_stdin();
-						scanf("%d", &search_ele);
-						linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
-					}
-					else if(arr_datatype==FLOAT)
-					{
-						float search_ele;
-						clean_stdin();
-						scanf("%f", &search_ele);
-						linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
-					}
-					else if(arr_datatype==CHAR)
-					{
-						char search_ele;
-						clean_stdin();
-						scanf("%c", &search_ele);
-						linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
-					}
-					break;
-				case 1:
-					
-            break;
+			do
+			{
+				printf("  Searching Techniques\n\n");
+				printf("0: Linear Search Implementation\n");
+				printf("1: Binary Search Implementation\n");
+				printf("2: Return to main menu");
+				printf("Choice: ");
+				scanf("%d",&sub_choice);
+				switch(sub_choice)
+				{
+					case 0:
+						//Linear Search
+						clear_screen();
+						create_and_LS();
+						break;
+					case 1:
+						//Binary Search
+						clear_screen();
+						create_and_BS();
+						break;
+					case 2:
+						printf("\nReturning to Main Menu\n\n");
+						break;
+				}
+			} while(sub_choice!=2);
+			clear_screen();
+			break;
         case 2:
             printf("  Sorting Techniques\n");
             printf("1: Bubble Sort\n");
