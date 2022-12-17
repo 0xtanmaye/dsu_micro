@@ -24,6 +24,13 @@ void clear_screen()
     #endif
 }
 
+void pause_screen()
+{
+	clean_stdin();
+	printf("\nPress enter to continue\n");
+	getchar();
+}
+
 void *create_array(int format, int size)
 {
 	int ele_size;
@@ -105,8 +112,6 @@ int get_size()
 
 int linear_search(int format, int size, void *arr_ptr, void *search_ele)
 {
-	printf("Linear Search \n\n");
-	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int flag=0;
     if(format==INT)
     {
@@ -163,8 +168,6 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
 }
 int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 {
-	printf("Binary Search \n\n");
-	printf("-----------------------------------------------------------------------------------------------------------------\n");
     if(format==INT)
     {
         int *array=(int *)arr_ptr;
@@ -265,10 +268,12 @@ int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 
 void create_and_LS()
 {
+	printf("Linear Search \n\n");
+	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int arr_datatype=get_datatype();
 	int arr_size=get_size();
 	void *arr_ptr=create_array(arr_datatype, arr_size);
-	printf("Enter the %d elements:\n", arr_size);
+	printf("\nEnter the %d elements:\n", arr_size);
 	clean_stdin();
 	int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
 	printf("\n%d Elements read\n", ele_read);
@@ -298,10 +303,12 @@ void create_and_LS()
 
 void create_and_BS()
 {
+	printf("Binary Search \n\n");
+	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int arr_datatype=get_datatype();
 	int arr_size=get_size();
 	void *arr_ptr=create_array(arr_datatype, arr_size);
-	printf("Enter the %d elements:\n", arr_size);
+	printf("\nEnter the %d elements:\n", arr_size);
 	clean_stdin();
 	int ele_read=read_array(arr_datatype, arr_ptr, arr_size);
 	printf("\n%d Elements read\n", ele_read);
@@ -351,26 +358,28 @@ int main()
     {
         case 1:
 			do
-			{
+			{	
+				clear_screen();
 				printf("  Searching Techniques\n\n");
-				printf("0: Linear Search Implementation\n");
-				printf("1: Binary Search Implementation\n");
-				printf("2: Return to main menu");
-				printf("Choice: ");
-				scanf("%d",&sub_choice);
+            	printf("1: Linear Search Implementation\n");
+            	printf("2: Binary Search Implementation\n");
+            	printf("3: Return to main menu\n\n");
+            	printf("Choice: ");
+            	scanf("%d",&sub_choice);
 				switch(sub_choice)
 				{
-					case 0:
+					case 1:
 						//Linear Search
 						clear_screen();
 						create_and_LS();
+						pause_screen();
 						break;
-					case 1:
+					case 2:
 						//Binary Search
 						clear_screen();
 						create_and_BS();
 						break;
-					case 2:
+					case 3:
 						printf("\nReturning to Main Menu\n\n");
 						break;
 				}
