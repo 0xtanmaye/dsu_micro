@@ -6,6 +6,10 @@
 #define FLOAT 2 
 #define CHAR 3
 #define LIMIT 200
+#define ASC 123
+#define DESC 321
+#define VERBOSE 1
+#define NVERBOSE 0
 
 #define lx
 
@@ -34,13 +38,18 @@ void pause_screen()
 void *create_array(int format, int size)
 {
 	int ele_size;
-	if(format==INT)
-		ele_size=4;
-	else if(format==FLOAT)
-		ele_size=4;
-	else if(format==CHAR)
-		ele_size=1;
-
+	switch(format)
+	{
+		case INT:
+			ele_size=4;
+			break;
+		case FLOAT:
+			ele_size=4;
+			break;
+		case CHAR:
+			ele_size=1;
+			break;
+	}
     void *ptr=calloc(size, ele_size);
     return ptr;
 }
@@ -48,31 +57,70 @@ void *create_array(int format, int size)
 int read_array(int format, void *arrayptr, int size)
 {
 	int i;
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)arrayptr;
+			for(i=0;i<size;i++)
+			{
+				scanf(" %d", &array[i]);
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arrayptr;
+			for(i=0;i<size;i++)
+			{
+				scanf(" %f", &array[i]);
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)array;
+			for(i=0;i<size;i++)
+			{
+				scanf(" %c", &array[i]);
+			}
+		}
+	}
+	return i;
+}
 
-	if(format==INT)
-    {
-        int *array=(int *)arrayptr;
-		for(i=0;i<size;i++)
+int display_array(int format, void *arrayptr, int size)
+{
+	int i;
+	switch(format)
+	{
+		case INT:
 		{
-			scanf(" %d", &array[i]);
+			int *array=(int *)arrayptr;
+			for(i=0;i<size;i++)
+			{
+				printf("%d\t", array[i]);
+			}
+			break;
 		}
-    }
-    else if(format==FLOAT)
-    {
-        float *array=(float *)arrayptr;
-		for(i=0;i<size;i++)
+		case FLOAT:
 		{
-			scanf(" %f", &array[i]);
+			float *array=(float *)arrayptr;
+			for(i=0;i<size;i++)
+			{
+				scanf("%f\t", array[i]);
+			}
+			break;
 		}
-    }
-    else if(format==CHAR)
-    {
-        char *array=(char *)array;
-		for(i=0;i<size;i++)
+		case CHAR:
 		{
-			scanf(" %c", &array[i]);
+			char *array=(char *)array;
+			for(i=0;i<size;i++)
+			{
+				scanf("%c\t", array[i]);
+			}
 		}
-    }
+	}
 	return i;
 }
 
@@ -108,6 +156,450 @@ int get_size()
 	} while(size>200 || size<1);
 
 	return size;
+}
+
+void bubble_sort(int format, int size, void *arr_ptr, int order, int verbose)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)arr_ptr;
+			int i, j;
+			int temp;
+			if(order==ASC)
+			{	
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]>array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]<array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arr_ptr;
+			int i, j;
+			float temp;
+			if(order==ASC)
+			{	
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]>array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]<array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)arr_ptr;
+			int i, j;
+			char temp;
+			if(order==ASC)
+			{	
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]>array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=size-1;i>0;i--)
+				{
+					for(j=0;j<i;j++)
+					{
+						if(array[j]<array[j+1])
+						{
+							temp=array[j];
+							array[j]=array[j+1];
+							array[j+1]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			break;
+		}
+	}
+}
+
+void insertion_sort(int format, int size, void *arr_ptr, int order, int verbose)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)arr_ptr;
+			int i, j;
+			int key;
+			if(order==ASC)
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]>key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]<key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arr_ptr;
+			int i,j;
+			float key;
+			if(order==ASC)
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]>key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]<key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)arr_ptr;
+			int i,j;
+			char key;
+			if(order==ASC)
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]>key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=1;i<size;i++)
+				{
+					key=array[i];
+					j=i-1;
+			
+					while(j>=0 && array[j]<key)
+					{
+						array[j+1]=array[j];
+						j--;
+					}
+					array[j+1]=key;
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+		}
+	}
+}
+
+void selection_sort(int format, int size, void *arr_ptr, int order, int verbose)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)arr_ptr;
+			int i, j;
+			int temp;
+			if(order==ASC)
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]>array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]<array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+					
+				}
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arr_ptr;
+			int i,j;
+			float temp;
+			if(order==ASC)
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]>array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]<array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+					
+				}
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)arr_ptr;
+			int i,j;
+			char temp;
+			if(order==ASC)
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]>array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+			else
+			{
+				for(i=0;i<size;i++)
+				{
+					for(j=i+1;j<size;j++)
+					{
+						if(array[i]<array[j])
+						{
+							temp=array[i];
+							array[i]=array[j];
+							array[j]=temp;
+						}
+					}
+					if(verbose)
+					{
+						display_array(format, array, size);
+						printf("\n");
+					}
+				}
+			}
+		}
+	}
 }
 
 int linear_search(int format, int size, void *arr_ptr, void *search_ele)
@@ -166,6 +658,7 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
     }
 	return flag;
 }
+
 int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 {
     if(format==INT)
@@ -378,6 +871,7 @@ int main()
 						//Binary Search
 						clear_screen();
 						create_and_BS();
+						pause_screen();
 						break;
 					case 3:
 						printf("\nReturning to Main Menu\n\n");
@@ -387,13 +881,39 @@ int main()
 			clear_screen();
 			break;
         case 2:
-            printf("  Sorting Techniques\n");
-            printf("1: Bubble Sort\n");
-            printf("2: Insertion Sort\n");
-            printf("3: Selection Sort\n");
-            printf("4: Radix Sort\n");
-            printf("5: Quick Sort\n");
-            break;
+			do
+			{	
+				clear_screen();
+            	printf("  Sorting Techniques\n");
+            	printf("1: Bubble Sort\n");
+            	printf("2: Insertion Sort\n");
+            	printf("3: Selection Sort\n");
+            	printf("4: Radix Sort\n");
+            	printf("5: Quick Sort\n");
+				printf("6: Return to main menu\n\n");
+            	printf("Choice: ");
+            	scanf("%d",&sub_choice);
+				switch(sub_choice)
+				{
+					case 1:
+						//Linear Search
+						clear_screen();
+						create_and_LS();
+						pause_screen();
+						break;
+					case 2:
+						//Binary Search
+						clear_screen();
+						create_and_BS();
+						pause_screen();
+						break;
+					case 3:
+						printf("\nReturning to Main Menu\n\n");
+						break;
+				}
+			} while(sub_choice!=2);
+			clear_screen();
+			break;
         case 3:
             printf("  Linear Data Structures\n");
             printf("1: Array\n");
