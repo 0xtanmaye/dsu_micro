@@ -851,6 +851,7 @@ void create_and_LS()
 			clean_stdin();
 			scanf("%d", &search_ele);
 			linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+			break;
 		}
 		case FLOAT:
 		{
@@ -858,6 +859,7 @@ void create_and_LS()
 			clean_stdin();
 			scanf("%f", &search_ele);
 			linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+			break;
 		}
 		case CHAR:
 		{
@@ -865,6 +867,7 @@ void create_and_LS()
 			clean_stdin();
 			scanf("%c", &search_ele);
 			linear_search(arr_datatype, arr_size, arr_ptr, &search_ele);
+			break;
 		}
 	}
 }
