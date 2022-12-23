@@ -740,7 +740,7 @@ int linear_search(int format, int size, void *arr_ptr, void *search_ele)
 int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 {
 	int flag=0;
-    switch(format)
+	switch(format)
 	{
 		case INT:
 		{
