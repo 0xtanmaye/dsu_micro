@@ -87,6 +87,7 @@ int read_array(int format, void *arrayptr, int size)
 			{
 				scanf(" %c", &array[i]);
 			}
+			break;
 		}
 	}
 	return i;
@@ -122,6 +123,7 @@ int display_array(int format, void *arrayptr, int size)
 			{
 				printf("%c\t", array[i]);
 			}
+			break;
 		}
 	}
 	return i;
@@ -511,6 +513,7 @@ void insertion_sort(int format, int size, void *arr_ptr, int order, int verbose)
 					}
 				}
 			}
+			break;
 		}
 	}
 }
@@ -666,6 +669,7 @@ void selection_sort(int format, int size, void *arr_ptr, int order, int verbose)
 					}
 				}
 			}
+			break;
 		}
 	}
 }
@@ -673,161 +677,172 @@ void selection_sort(int format, int size, void *arr_ptr, int order, int verbose)
 int linear_search(int format, int size, void *arr_ptr, void *search_ele)
 {
 	int flag=0;
-    if(format==INT)
-    {
-        int *array=(int *)arr_ptr;
-        int search=*((int *)search_ele);
-		for(int i=0;i<size;i++)
-    	{
-        	if(array[i]==search)
-        	{
-            	printf("Element found at position %d\n", i+1);
-            	flag++;
-        	}
-    	}
-    	if(flag==0)
-    	{
-        	printf("Element not found\n");
-    	}
-    }
-    else if(format==FLOAT)
-    {
-        float *array=(float *)arr_ptr;
-        float search=*((float *)search_ele);
-		for(int i=0;i<size;i++)
-    	{
-        	if(array[i]==search)
-        	{
-            	printf("Element found at position %d\n", i+1);
-            	flag++;
-        	}
-    	}
-    	if(flag==0)
-    	{
-        	printf("Element not found\n");
-    	}
-    }
-    else if(format==CHAR)
-    {
-        char *array=(char *)arr_ptr;
-        char search=*((char *)search_ele);
-		for(int i=0;i<size;i++)
-    	{
-        	if(array[i]==search)
-        	{
-            	printf("Element found at position %d\n", i+1);
-            	flag++;
-        	}
-    	}
-    	if(flag==0)
-    	{
-        	printf("Element not found\n");
-    	}
-    }
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)arr_ptr;
+			int search=*((int *)search_ele);
+			for(int i=0;i<size;i++)
+			{
+				if(array[i]==search)
+				{
+					printf("Element found at position %d\n", i+1);
+					flag++;
+				}
+			}
+			if(flag==0)
+			{
+				printf("Element not found\n");
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arr_ptr;
+			float search=*((float *)search_ele);
+			for(int i=0;i<size;i++)
+			{
+				if(array[i]==search)
+				{
+					printf("Element found at position %d\n", i+1);
+					flag++;
+				}
+			}
+			if(flag==0)
+			{
+				printf("Element not found\n");
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)arr_ptr;
+			char search=*((char *)search_ele);
+			for(int i=0;i<size;i++)
+			{
+				if(array[i]==search)
+				{
+					printf("Element found at position %d\n", i+1);
+					flag++;
+				}
+			}
+			if(flag==0)
+			{
+				printf("Element not found\n");
+			}
+			break;
+		}
+	}
 	return flag;
 }
 
 int binary_search(int format, int size, void *arr_ptr, void *search_ele)
 {
-    if(format==INT)
-    {
-        int *array=(int *)arr_ptr;
-        int search=*((int *)search_ele);
-		int mid, lowr, highr, flag=0;
-		//sorting the array before binary search
-		insertion_sort(format, size, array, ASC, NVERBOSE);
-
-    	lowr=0;
-    	highr=size-1;
-    	while(lowr<=highr)
+	int flag=0;
+    switch(format)
+	{
+		case INT:
 		{
-			mid=(lowr+highr)/2;
-			if(search==array[mid])
-			{
-				printf("Element found at position %d\n", mid+1);
-				flag++;
-				break;
-			}
-			else if(search>array[mid])
-			{
-				lowr=mid+1;
-			}
-			else if(search<array[mid])
-			{
-				highr=mid-1;
-			}
-		}
-		if(flag==0)
-			printf("Element not found\n");
-		
-		return flag;
-    }
-    else if(format==FLOAT)
-    {
-        float *array=(float *)arr_ptr;
-        float search=*((float *)search_ele);
-		int mid, lowr, highr, flag=0;
-		//sorting the array before binary search
-		insertion_sort(format, size, array, ASC, NVERBOSE);
+			int *array=(int *)arr_ptr;
+			int search=*((int *)search_ele);
+			int mid, lowr, highr, flag=0;
+			//sorting the array before binary search
+			insertion_sort(format, size, array, ASC, NVERBOSE);
 
-    	lowr=0;
-    	highr=size-1;
-    	while(lowr<=highr)
-		{
-			mid=(lowr+highr)/2;
-			if(search==array[mid])
+			lowr=0;
+			highr=size-1;
+			while(lowr<=highr)
 			{
-				printf("Element found at position %d\n", mid+1);
-				flag++;
-				break;
+				mid=(lowr+highr)/2;
+				if(search==array[mid])
+				{
+					printf("Element found at position %d\n", mid+1);
+					flag++;
+					break;
+				}
+				else if(search>array[mid])
+				{
+					lowr=mid+1;
+				}
+				else if(search<array[mid])
+				{
+					highr=mid-1;
+				}
 			}
-			else if(search>array[mid])
-			{
-				lowr=mid+1;
-			}
-			else if(search<array[mid])
-			{
-				highr=mid-1;
-			}
-		}
-		if(flag==0)
-			printf("Element not found\n");
-
-		return flag;
-    }
-    else if(format==CHAR)
-    {
-		char *array=(char *)arr_ptr;
-        char search=*((char *)search_ele);
-    	int mid, lowr, highr, flag=0;
-		//sorting the array before binary search
-		insertion_sort(format, size, array, ASC, NVERBOSE);
-
-    	lowr=0;
-    	highr=size-1;
-    	while(lowr<=highr)
-		{
-			mid=(lowr+highr)/2;
-			if(search==array[mid])
-			{
-				printf("Element found at position %d\n", mid+1);
-				flag++;
-				break;
-			}
-			else if(search>array[mid])
-			{
-				lowr=mid+1;
-			}
-			else if(search<array[mid])
-			{
-				highr=mid-1;
-			}
-		}
-		if(flag==0)
-			printf("Element not found\n");
+			if(flag==0)
+				printf("Element not found\n");
 			
-		return flag;
+			break;
+		}
+		case FLOAT:
+		{
+			float *array=(float *)arr_ptr;
+			float search=*((float *)search_ele);
+			int mid, lowr, highr, flag=0;
+			//sorting the array before binary search
+			insertion_sort(format, size, array, ASC, NVERBOSE);
+
+			lowr=0;
+			highr=size-1;
+			while(lowr<=highr)
+			{
+				mid=(lowr+highr)/2;
+				if(search==array[mid])
+				{
+					printf("Element found at position %d\n", mid+1);
+					flag++;
+					break;
+				}
+				else if(search>array[mid])
+				{
+					lowr=mid+1;
+				}
+				else if(search<array[mid])
+				{
+					highr=mid-1;
+				}
+			}
+			if(flag==0)
+				printf("Element not found\n");
+
+			break;
+		}
+		case CHAR:
+		{
+			char *array=(char *)arr_ptr;
+			char search=*((char *)search_ele);
+			int mid, lowr, highr, flag=0;
+			//sorting the array before binary search
+			insertion_sort(format, size, array, ASC, NVERBOSE);
+
+			lowr=0;
+			highr=size-1;
+			while(lowr<=highr)
+			{
+				mid=(lowr+highr)/2;
+				if(search==array[mid])
+				{
+					printf("Element found at position %d\n", mid+1);
+					flag++;
+					break;
+				}
+				else if(search>array[mid])
+				{
+					lowr=mid+1;
+				}
+				else if(search<array[mid])
+				{
+					highr=mid-1;
+				}
+			}
+			if(flag==0)
+				printf("Element not found\n");
+				
+			break;
+		}
 	}
+	return flag;
 }
 
 void create_and_LS()
