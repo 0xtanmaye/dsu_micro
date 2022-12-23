@@ -210,6 +210,63 @@ int get_verbose()
 		}
 	} while (ch!='y' || ch!='n');		
 }
+
+int push(int format, void *stack_ptr, int *top_ptr, void *val)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *stack=(int *)stack_ptr;
+			int val=*((int *)val);
+		}
+		case FLOAT:
+		{
+			float *stack=(float *)stack_ptr;
+			float val=*((float *)val);
+		}
+		case CHAR:
+		{
+			char *stack=(char *)stack_ptr;
+		 	char val=*((char *)val);
+		}
+	}
+		
+
+	if(top==SIZE-1)
+	{
+		return;
+	}
+	else
+	{
+		top++;
+		stack[top]=val;
+		return stack[top];
+	}
+}
+
+int pop(int format, void *stack_ptr, int *top_ptr, void *val)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *stack=(int *)stack_ptr;
+			int val=*((int *)val);
+		}
+		case FLOAT:
+		{
+			float *stack=(float *)stack_ptr;
+			float val=*((float *)val);
+		}
+		case CHAR:
+		{
+			char *stack=(char *)stack_ptr;
+		 	char val=*((char *)val);
+		}
+	}
+}
+
 void bubble_sort(int format, int size, void *arr_ptr, int order, int verbose)
 {
 	switch(format)
