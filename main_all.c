@@ -967,7 +967,7 @@ void create_and_sort(int sortmethod)
 }
 int main()
 {
-    int main_choice, sub_choice;
+	int main_choice, sub_choice;
 	do
 	{
 		printf("-----------------------------------------------------------------------------------------------------------------\n");
