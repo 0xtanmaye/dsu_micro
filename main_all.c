@@ -16,6 +16,28 @@
 #define SELECTION 101
 #define INSERTION 102
 
+/* Base format for functions
+int function(int format, void *array_ptr, int *top_ptr, void *val)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *array=(int *)array_ptr;
+			int val=*((int *)val);
+		}
+		case FLOAT:
+		{
+			float *array=(float *)array_ptr;
+			float val=*((float *)val);
+		}
+		case CHAR:
+		{
+			char *array=(char *)array_ptr;
+		 	char val=*((char *)val);
+		}
+	}
+} */
 void clean_stdin(void)
 {
     int c;
@@ -211,60 +233,590 @@ int get_verbose()
 	} while (ch!='y' || ch!='n');		
 }
 
-int push(int format, void *stack_ptr, int *top_ptr, void *val)
+void *push(int format, void *stack_ptr, int size, int *top_ptr, void *val_ptr)
 {
 	switch(format)
 	{
 		case INT:
 		{
 			int *stack=(int *)stack_ptr;
-			int val=*((int *)val);
+			int val=*((int *)val_ptr);
+			if(*top_ptr==size-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				(*top_ptr)++;
+				stack[*top_ptr]=val;
+				return &stack[*top_ptr];
+			}
+			break;
 		}
 		case FLOAT:
 		{
 			float *stack=(float *)stack_ptr;
-			float val=*((float *)val);
+			float val=*((float *)val_ptr);
+			if(*top_ptr==size-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				(*top_ptr)++;
+				stack[*top_ptr]=val;
+				return &stack[*top_ptr];
+			}
+			break;
 		}
 		case CHAR:
 		{
 			char *stack=(char *)stack_ptr;
-		 	char val=*((char *)val);
+		 	char val=*((char *)val_ptr);
+			if(*top_ptr==size-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				(*top_ptr)++;
+				stack[*top_ptr]=val;
+				return &stack[*top_ptr];
+			}
+			break;
 		}
-	}
-		
-
-	if(top==SIZE-1)
-	{
-		return;
-	}
-	else
-	{
-		top++;
-		stack[top]=val;
-		return stack[top];
 	}
 }
 
-int pop(int format, void *stack_ptr, int *top_ptr, void *val)
+void *pop(int format, void *stack_ptr, int size, int *top_ptr, void *val_ptr)
 {
 	switch(format)
 	{
 		case INT:
 		{
 			int *stack=(int *)stack_ptr;
-			int val=*((int *)val);
+			if(*top_ptr==-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				*((int *)val_ptr)=stack[*top_ptr];
+				(*top_ptr)--;
+				return val_ptr;
+			}
+			break;
 		}
 		case FLOAT:
 		{
 			float *stack=(float *)stack_ptr;
-			float val=*((float *)val);
+			if(*top_ptr==-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				*((float *)val_ptr)=stack[*top_ptr];
+				(*top_ptr)--;
+				return val_ptr;
+			}
+			break;
 		}
 		case CHAR:
 		{
 			char *stack=(char *)stack_ptr;
-		 	char val=*((char *)val);
+			if(*top_ptr==-1)
+			{
+				return &stack[*top_ptr];
+			}
+			else
+			{
+				*((char *)val_ptr)=stack[*top_ptr];
+				(*top_ptr)--;
+				return val_ptr;
+			}
+			break;
 		}
 	}
+}
+
+int display_stack(int format, void *stack_ptr, int size, int *top_ptr)
+{
+	int i;
+	switch(format)
+	{
+		case INT:
+		{
+			int *stack=(int *)stack_ptr;
+			if(*top_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*top_ptr;i>=0;i--)
+					printf("%d\n", stack[i]);
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *stack=(float *)stack_ptr;
+			if(*top_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*top_ptr;i>=0;i--)
+					printf("%f\n", stack[i]);
+			}
+		}
+		case CHAR:
+		{
+			char *stack=(char *)stack_ptr;
+			if(*top_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*top_ptr;i>=0;i--)
+					printf("%c\n", stack[i]);
+			}
+		}
+	}
+	return i;	
+}
+
+void *l_enqueue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, void *val_ptr)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			int val=*((int *)val_ptr);
+			if(*r_ptr==size-1)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=0;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				(*r_ptr)++;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			float val=*((float *)val_ptr);
+			if(*r_ptr==size-1)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=0;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				(*r_ptr)++;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;		
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+		 	char val=*((char *)val_ptr);
+			if(*r_ptr==size-1)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=0;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				(*r_ptr)++;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;
+		}
+	}
+}
+
+void *l_dequeue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, void *val_ptr)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}
+			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			{
+				*((int *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((int *)val_ptr)=queue[*f_ptr];
+				(*f_ptr)++;
+				return val_ptr;
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}
+			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			{
+				*((float *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((float *)val_ptr)=queue[*f_ptr];
+				(*f_ptr)++;
+				return val_ptr;
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}
+			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			{
+				*((char *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((char *)val_ptr)=queue[*f_ptr];
+				(*f_ptr)++;
+				return val_ptr;
+			}
+			break;
+		}
+	}
+}
+
+void *c_enqueue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, void *val_ptr)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			int val=*((int *)val_ptr);
+			if((*r_ptr+1)%size==*f_ptr)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			float val=*((float *)val_ptr);
+			if((*r_ptr+1)%size==*f_ptr)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+		 	char val=*((char *)val_ptr);
+			if((*r_ptr+1)%size==*f_ptr)
+			{
+				return &queue[*r_ptr];
+			}
+			else if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				*f_ptr=0;
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			else
+			{
+				*r_ptr=(*r_ptr+1)%size;
+				queue[*r_ptr]=val;
+				return &queue[*r_ptr];
+			}
+			break;
+		}
+	}
+}
+
+void *c_dequeue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, void *val_ptr)
+{
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}	
+			else if(*f_ptr==*r_ptr)
+			{
+				*((int *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((int *)val_ptr)=queue[*f_ptr];
+				*f_ptr=(*f_ptr+1)%size;
+				return val_ptr;
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}	
+			else if(*f_ptr==*r_ptr)
+			{
+				*((float *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((float *)val_ptr)=queue[*f_ptr];
+				*f_ptr=(*f_ptr+1)%size;
+				return val_ptr;
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return &queue[*f_ptr];
+			}	
+			else if(*f_ptr==*r_ptr)
+			{
+				*((char *)val_ptr)=queue[*f_ptr];
+				*f_ptr=-1;
+				*r_ptr=-1;
+				return val_ptr;
+			}
+			else
+			{
+				*((char *)val_ptr)=queue[*f_ptr];
+				*f_ptr=(*f_ptr+1)%size;
+				return val_ptr;
+			}
+			break;
+		}
+	}
+}
+
+int l_display_queue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr)
+{
+	int i;
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*f_ptr;i<=*r_ptr;i++)
+					printf("%d\t", queue[i]);
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*f_ptr;i<=*r_ptr;i++)
+					printf("%f\t", queue[i]);
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				for(i=*f_ptr;i<=*r_ptr;i++)
+					printf("%c\t", queue[i]);
+			}			
+			break;
+		}
+	}
+	return i;
+}
+
+int c_display_queue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr)
+{
+	int i;
+	switch(format)
+	{
+		case INT:
+		{
+			int *queue=(int *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				if(*f_ptr<*r_ptr)
+				{
+					for(i=*f_ptr;i<=*r_ptr;i++)
+						printf("%d\t", queue[i]);
+				}
+				else
+				{
+					for(i=*f_ptr;i!=*r_ptr;i=(i+1)%size)
+						printf("%d\t", queue[i]);
+
+					printf("%d", queue[i]);
+				}
+			}
+			break;
+		}
+		case FLOAT:
+		{
+			float *queue=(float *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				if(*f_ptr<*r_ptr)
+				{
+					for(i=*f_ptr;i<=*r_ptr;i++)
+						printf("%f\t", queue[i]);
+				}
+				else
+				{
+					for(i=*f_ptr;i!=*r_ptr;i=(i+1)%size)
+						printf("%f\t", queue[i]);
+
+					printf("%f", queue[i]);
+				}
+			}
+			break;
+		}
+		case CHAR:
+		{
+			char *queue=(char *)queue_ptr;
+			if(*f_ptr==-1 && *r_ptr==-1)
+			{
+				return 0;
+			}
+			else
+			{
+				if(*f_ptr<*r_ptr)
+				{
+					for(i=*f_ptr;i<=*r_ptr;i++)
+						printf("%c\t", queue[i]);
+				}
+				else
+				{
+					for(i=*f_ptr;i!=*r_ptr;i=(i+1)%size)
+						printf("%c\t", queue[i]);
+
+					printf("%c", queue[i]);
+				}
+			}
+			break;
+		}
+	}
+	return i;
 }
 
 void bubble_sort(int format, int size, void *arr_ptr, int order, int verbose)
