@@ -169,7 +169,7 @@ int get_datatype()
 	} while(1);
 }
 
-int get_size()
+int get_array_size()
 {
 	int size;
 	do
@@ -178,6 +178,38 @@ int get_size()
 		scanf("%d", &size);
 		if(size<=LIMIT && size>0)
 			printf("\nSetting array size=%d", size);
+		else
+			printf("\nSize beyond Limit(1-200), please enter a valid size!\n");
+	} while(size>200 || size<1);
+
+	return size;
+}
+
+int get_stack_size()
+{
+	int size;
+	do
+	{
+		printf("Enter Stack size(valid size:1-200):");
+		scanf("%d", &size);
+		if(size<=LIMIT && size>0)
+			printf("\nSetting Stack size=%d", size);
+		else
+			printf("\nSize beyond Limit(1-200), please enter a valid size!\n");
+	} while(size>200 || size<1);
+
+	return size;
+}
+
+int get_queue_size()
+{
+	int size;
+	do
+	{
+		printf("Enter Queue size(valid size:1-200):");
+		scanf("%d", &size);
+		if(size<=LIMIT && size>0)
+			printf("\nSetting Queue size=%d", size);
 		else
 			printf("\nSize beyond Limit(1-200), please enter a valid size!\n");
 	} while(size>200 || size<1);
@@ -232,6 +264,34 @@ int get_verbose()
 		}
 	} while (ch!='y' || ch!='n');		
 }
+
+// void insert_array_index(int format, void *arr_ptr, int size, int n_read int ins_idx, void *val_ptr)
+// {
+// 	switch(format)
+// 	{
+// 		case INT:
+// 		{
+// 			int *array=(int *)arr_ptr;
+// 			int val=*((int *)val_ptr);
+// 			if(n_read==size)
+// 			{
+// 				arr_ptr=(int *)realloc(arr_ptr, size+1*sizeof(int));
+				
+// 			}
+// 		}
+// 		case FLOAT:
+// 		{
+// 			float *array=(float *)array_ptr;
+// 			float val=*((float *)val_ptr);
+// 		}
+// 		case CHAR:
+// 		{
+// 			char *array=(char *)array_ptr;
+// 			char val=*((char *)val);
+			
+// 		}
+// 	}
+// }
 
 void *push(int format, void *stack_ptr, int size, int *top_ptr, void *val_ptr)
 {
@@ -476,7 +536,7 @@ void *l_dequeue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, v
 			{
 				return &queue[*f_ptr];
 			}
-			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			else if(*f_ptr==*r_ptr)
 			{
 				*((int *)val_ptr)=queue[*f_ptr];
 				*f_ptr=-1;
@@ -498,7 +558,7 @@ void *l_dequeue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, v
 			{
 				return &queue[*f_ptr];
 			}
-			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			else if(*f_ptr==*r_ptr)
 			{
 				*((float *)val_ptr)=queue[*f_ptr];
 				*f_ptr=-1;
@@ -520,7 +580,7 @@ void *l_dequeue(int format, void *queue_ptr, int size, int *f_ptr, int *r_ptr, v
 			{
 				return &queue[*f_ptr];
 			}
-			else if(*r_ptr==size-1 && *f_ptr==*r_ptr)
+			else if(*f_ptr==*r_ptr)
 			{
 				*((char *)val_ptr)=queue[*f_ptr];
 				*f_ptr=-1;
@@ -1459,7 +1519,7 @@ void create_and_LS()
 	printf("Linear Search \n\n");
 	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int arr_datatype=get_datatype();
-	int arr_size=get_size();
+	int arr_size=get_array_size();
 	void *arr_ptr=create_array(arr_datatype, arr_size);
 	printf("\nEnter the %d elements:\n", arr_size);
 	clean_stdin();
@@ -1501,7 +1561,7 @@ void create_and_BS()
 	printf("Binary Search \n\n");
 	printf("-----------------------------------------------------------------------------------------------------------------\n");
 	int arr_datatype=get_datatype();
-	int arr_size=get_size();
+	int arr_size=get_array_size();
 	void *arr_ptr=create_array(arr_datatype, arr_size);
 	printf("\nEnter the %d elements:\n", arr_size);
 	clean_stdin();
@@ -1544,7 +1604,7 @@ void create_and_BS()
 void create_and_sort(int sortmethod)
 {
 	int arr_datatype=get_datatype();
-	int arr_size=get_size();
+	int arr_size=get_array_size();
 	void *arr_ptr=create_array(arr_datatype, arr_size);
 	printf("\nEnter the %d elements:\n", arr_size);
 	clean_stdin();
@@ -1573,6 +1633,567 @@ void create_and_sort(int sortmethod)
 	}
 	display_array(arr_datatype, arr_ptr, arr_size);
 	printf("\n");
+}
+
+/* void array_operations()
+{
+	int arr_datatype=get_datatype();
+	int arr_size=get_array_size();
+	void *arr_ptr=create_array(arr_datatype, arr_size);
+	int sub_choice;
+	do
+	{
+		clear_screen();
+		printf("  Enter the operation you want to perform:\n\n");
+		printf("1: Read array\n");
+		printf("2: Insert element at an index\n");
+		printf("3: \n\n");
+		printf("Choice: ");
+		switch(sub_choice)
+		{
+			case 1:
+				//Insert element
+				clear_screen();
+				//function
+				pause_screen();
+				break;
+			case 2:
+				//Binary Search
+				clear_screen();
+				//function
+				pause_screen();
+				break;
+			case 3:
+				printf("\nReturning to Main Menu\n\n");
+				break;
+		}
+	} while(sub_choice!=3);
+} */
+
+void stack_operations()
+{
+	int stk_datatype=get_datatype();
+	int stk_size=get_stack_size();
+	void *stk_ptr=create_array(stk_datatype, stk_size);
+	int top=-1;
+	int choice;
+	do
+	{
+		clean_stdin();
+		printf("\nEnter the Stack operation you want to perform(1-push, 2-pop, 3-view, 4-exit):");
+		scanf("%d", &choice);
+		switch(stk_datatype)
+		{
+			case INT:
+			{
+				int val;
+				switch(choice)
+				{
+					case 1:
+						if(top==stk_size-1)
+						{
+							printf("Cannot perform push operation, stack is full\n");
+						}
+						else
+						{
+							printf("Enter the value you want to push:");
+							scanf("%d", &val);
+							val=*((int *)push(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%d pushed to the stack\n", val);
+						}
+						break;
+					case 2:
+						if(top==-1)
+						{
+							printf("Cannot perform pop operation, stack is empty\n");
+						}
+						else
+						{
+							val=*((int *)pop(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%d popped from the stack\n", val);
+						}
+						break;
+					case 3:
+						if(top==-1)
+						{
+							printf("The stack is empty\n");
+						}
+						else
+						{
+							printf("The elements in the stack are:\n");
+							display_stack(stk_datatype, stk_ptr, stk_size, &top);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case FLOAT:
+			{
+				float val;
+				switch(choice)
+				{
+					case 1:
+						if(top==stk_size-1)
+						{
+							printf("Cannot perform push operation, stack is full\n");
+						}
+						else
+						{
+							printf("Enter the value you want to push:");
+							scanf("%f", &val);
+							val=*((float *)push(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%f pushed to the stack\n", val);
+						}
+						break;
+					case 2:
+						if(top==-1)
+						{
+							printf("Cannot perform pop operation, stack is empty\n");
+						}
+						else
+						{
+							val=*((float *)pop(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%f popped from the stack\n", val);
+						}
+						break;
+					case 3:
+						if(top==-1)
+						{
+							printf("The stack is empty\n");
+						}
+						else
+						{
+							printf("The elements in the stack are:\n");
+							display_stack(stk_datatype, stk_ptr, stk_size, &top);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case CHAR:
+			{
+				char val;
+				switch(choice)
+				{
+					case 1:
+						if(top==stk_size-1)
+						{
+							printf("Cannot perform push operation, stack is full\n");
+						}
+						else
+						{
+							printf("Enter the value you want to push:");
+							scanf(" %c", &val);
+							val=*((char *)push(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%c pushed to the stack\n", val);
+						}
+						break;
+					case 2:
+						if(top==-1)
+						{
+							printf("Cannot perform pop operation, stack is empty\n");
+						}
+						else
+						{
+							val=*((char *)pop(stk_datatype, stk_ptr, stk_size, &top, &val));
+							printf("%c popped from the stack\n", val);
+						}
+						break;
+					case 3:
+						if(top==-1)
+						{
+							printf("The stack is empty\n");
+						}
+						else
+						{
+							printf("The Elements in the Stack are:\n");
+							display_stack(stk_datatype, stk_ptr, stk_size, &top);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, Enter a valid choice\n");
+				}
+				break;
+			}
+		} 
+	} while(choice!=4);
+}
+
+void l_queue_operations()
+{
+	int q_datatype=get_datatype();
+	int q_size=get_queue_size();
+	void *q_ptr=create_array(q_datatype, q_size);
+	int front=-1;
+	int rear=-1;
+	int choice;
+	do
+	{
+		clean_stdin();
+		printf("\nEnter the operation you want to perform(1-enqueue, 2-dequeue, 3-display queue, 4-exit):");
+		scanf("%d", &choice);
+		switch(q_datatype)
+		{
+			case INT:
+			{
+				int val;
+				switch(choice)
+				{
+					case 1:
+						if(rear==q_size-1)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf("%d", &val);
+							val=*((int *)l_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%d inserted in the queue\n", val);
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((int *)l_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%d deleted\n", val);
+						}
+						break;
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							l_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case FLOAT:
+			{
+				float val;
+				switch(choice)
+				{
+					case 1:
+						if(rear==q_size-1)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf("%f", &val);
+							val=*((float *)l_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%f inserted in the queue\n", val);
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((float *)l_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%f deleted\n", val);
+						}
+						break;
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							l_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case CHAR:
+			{
+				char val;
+				switch(choice)
+				{
+					case 1:
+						if(rear==q_size-1)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf(" %c", &val);
+							val=*((int *)l_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%c inserted in the queue\n", val);
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((char *)l_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%c deleted\n", val);
+						}
+						break;
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							l_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+		}
+	} while(choice!=4);
+}
+
+void c_queue_operations()
+{
+	int q_datatype=get_datatype();
+	int q_size=get_queue_size();
+	void *q_ptr=create_array(q_datatype, q_size);
+	int front=-1;
+	int rear=-1;
+	int choice;
+	do
+	{
+		clean_stdin();
+		printf("\nEnter the operation you want to perform(1-enqueue, 2-dequeue, 3-display queue, 4-exit):");
+		scanf("%d", &choice);
+		switch(q_datatype)
+		{
+			case INT:
+			{
+				int val;
+				switch(choice)
+				{
+					case 1:
+						if((rear+1)%q_size==front)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf("%d", &val);
+							val=*((int *)c_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%d inserted in the queue\n", val);	
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((int *)c_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%d deleted\n", val);
+						}
+						break;	
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							c_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}	
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case FLOAT:
+			{
+				float val;
+				switch(choice)
+				{
+					case 1:
+						if((rear+1)%q_size==front)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf("%f", &val);
+							val=*((float *)c_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%f inserted in the queue\n", val);	
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((float *)c_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%f deleted\n", val);
+						}
+						break;	
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							c_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}	
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+			case CHAR:
+			{
+				char val;
+				switch(choice)
+				{
+					case 1:
+						if((rear+1)%q_size==front)
+						{
+							printf("Queue is full, cannot perform insertion\n");
+						}
+						else
+						{
+							printf("Enter the element you want to insert:");
+							scanf(" %c", &val);
+							val=*((char *)c_enqueue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%c inserted in the queue\n", val);	
+						}
+						break;
+					case 2:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot perform deletion\n");
+						}
+						else
+						{
+							val=*((char *)c_dequeue(q_datatype, q_ptr, q_size, &front, &rear, &val));
+							printf("%c deleted\n", val);
+						}
+						break;	
+					case 3:
+						if(front==-1 && rear==-1)
+						{
+							printf("Queue is empty, cannot display\n");
+						}
+						else
+						{
+							printf("The Elements in the Queue are:\n");
+							c_display_queue(q_datatype, q_ptr, q_size, &front, &rear);
+							printf("\n");
+						}	
+						break;
+					case 4:
+						printf("Exitting...\n");
+						break;
+					default:
+						printf("Invalid choice, enter a valid choice\n");
+				}
+				break;
+			}
+		}
+	} while(choice!=4);
+}
+
+void queue_operations()
+{
+	int sub_choice;
+	do
+	{
+		clear_screen();
+		printf("  Queue Operations\n\n");
+		printf("1: Linear Queue\n");
+		printf("2: Circular Queue\n");
+		printf("3: Return to main menu\n\n");
+		printf("Choice: ");
+		scanf("%d",&sub_choice);
+		switch(sub_choice)
+		{
+			case 1:
+				clear_screen();
+				l_queue_operations();
+				break;
+			case 2:
+				clear_screen();
+				c_queue_operations();
+				break;
+			case 3:
+				printf("\nReturning to Main Menu\n\n");
+				break;
+		}
+	} while (sub_choice!=3);
 }
 int main()
 {
@@ -1668,11 +2289,48 @@ int main()
 				clear_screen();
 				break;
 			case 3:
-				printf("  Linear Data Structures\n");
-				printf("1: Array\n");
-				printf("2: Stack\n");
-				printf("3: Queue\n");
-				printf("4: Linked List\n");
+				do
+				{
+					clear_screen();
+					printf("  Linear Data Structures\n");
+					printf("1: Array\n");
+					printf("2: Stack\n");
+					printf("3: Queue\n");
+					printf("4: Linked List\n");
+					printf("5: Return to main menu\n\n");
+					printf("Choice: ");
+					scanf("%d", &sub_choice);
+					switch(sub_choice)
+					{
+						case 1:
+							//Array Operations
+							clear_screen();
+							//actual function
+							pause_screen();
+							break;
+						case 2:
+							//Stack
+							clear_screen();
+							stack_operations();
+							pause_screen();
+							break;
+						case 3:
+							//Queue
+							clear_screen();
+							queue_operations();
+							break;
+						case 4:
+							//Linked List
+							clear_screen();
+							//actual function
+							pause_screen();
+							break;
+						case 5:
+							printf("\nReturning to Main Menu\n\n");
+							break;
+					}
+				} while(sub_choice!=5);
+				clear_screen();
 				break;
 			case 4:
 				printf("  Non-Linear Data Structures\n");
